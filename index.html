@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ckb" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ڕاپۆرتی فرۆشتن | ڕیکار ستۆر</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kurdish:wght@400;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #121019;
+      --surface: #1c1828;
+      --surface-alt: #241f35;
+      --line: rgba(255,255,255,0.09);
+      --text: #f6f3ff;
+      --muted: #9c95b8;
+      --coral: #ff4d6d;
+      --gold: #ffc93c;
+      --frame-grad: linear-gradient(90deg, var(--coral), var(--gold));
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Naskh Arabic', serif;
+      line-height: 1.8;
+      min-height: 100vh;
+      padding: 15px;
+    }
+    h1, h2, h3, h4, button, label, input, select {
+      font-family: 'Noto Kufi Arabic', sans-serif;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    #login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+    }
+    .login-card .brand {
+      font-size: 22px;
+      font-weight: bold;
+      color: var(--coral);
+    }
+    .login-card .brand span {
+      color: var(--text);
+    }
+    .login-card .sub {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .field {
+      margin-bottom: 14px;
+      text-align: right;
+    }
+    .field label {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .field input, .field select {
+      width: 100%;
+      background: var(--surface-alt);
+      border: 1px solid var(--line);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+    .btn-block {
+      width: 100%;
+      text-align: center;
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    .btn-primary {
+      background: var(--frame-grad);
+      color: #121019;
+    }
+    .btn-primary:hover {
+      opacity: 0.92;
+    }
+    .error-msg {
+      color: var(--coral);
+      font-size: 13px;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .dash-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .dash-head h1 {
+      font-size: 22px;
+    }
+    .logout-btn {
+      background: none;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      padding: 6px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .admin-summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .stat-card {
+      background: var(--surface-alt);
+      border-radius: 14px;
+      padding: 16px;
+      border: 1px solid var(--line);
+    }
+    .stat-card .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .stat-card .stat-value {
+      font-family: 'Noto Kufi Arabic', sans-serif;
+      font-size: 22px;
+      font-weight: bold;
+      color: var(--gold);
+      margin-top: 4px;
+    }
+
+    .admin-form {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 20px;
+      border: 1px solid var(--line);
+      margin-bottom: 20px;
+    }
+    .admin-form h4 {
+      font-size: 15px;
+      margin-bottom: 14px;
+      color: var(--gold);
+    }
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .date-switch {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      background: var(--surface);
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+    }
+    .date-switch label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .date-switch input[type="date"] {
+      background: var(--surface-alt);
+      border: 1px solid var(--line);
+      color: var(--text);
+      padding: 4px 8px;
+      border-radius: 8px;
+    }
+
+    .filter-box {
+      background: var(--surface-alt);
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      border: 1px solid var(--line);
+    }
+
+    .report-box {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 16px;
+      border: 1px solid var(--line);
+      overflow-x: auto;
+    }
+    table.sales-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    table.sales-table th {
+      text-align: right;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      padding: 8px;
+    }
+    table.sales-table td {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--line);
+    }
+    .del-row {
+      background: none;
+      border: none;
+      color: var(--coral);
+      cursor: pointer;
+      font-size: 15px;
+    }
+    .note-text {
+      font-size: 11px;
+      color: var(--gold);
+      display: block;
+    }
+    .empty-note {
+      color: var(--muted);
+      text-align: center;
+      padding: 20px;
+    }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- LOGIN SCREEN -->
+  <div id="login-screen">
+    <div class="login-card">
+      <div class="brand">ڕیکار<span>ستۆر</span></div>
+      <div class="sub">تۆڵئامرازی تایبەت بە ڕاپۆرتی فرۆشتن — تەنها بۆ خۆت</div>
+      <div class="field">
+        <label>وشەی نهێنی</label>
+        <input type="password" id="admin-password">
+      </div>
+      <button class="btn-block btn-primary" id="login-btn">چوونەژوورەوە</button>
+      <p class="error-msg" id="login-error">وشەی نهێنی هەڵەیە!</p>
+    </div>
+  </div>
+
+  <!-- DASHBOARD SCREEN -->
+  <div id="dashboard-screen" class="hidden">
+    <div class="dash-head">
+      <h1>ڕاپۆرتی فرۆشتنی ڕۆژانە</h1>
+      <button class="logout-btn" id="logout-btn">چوونەدەرەوە</button>
+    </div>
+
+    <!-- DAILY SUMMARY STATS -->
+    <div class="admin-summary">
+      <div class="stat-card">
+        <div class="stat-label">کۆی دانەی فرۆشراو (ڕۆژی هەڵبژێردراو)</div>
+        <div class="stat-value" id="stat-total-qty">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">کۆی داهات (ڕۆژی هەڵبژێردراو)</div>
+        <div class="stat-value" id="stat-total-revenue">0 د.ع.</div>
+      </div>
+    </div>
+
+    <!-- NEW SALE FORM -->
+    <div class="admin-form">
+      <h4>زیادکردنی فرۆشتنێکی نوێ</h4>
+      <div class="field">
+        <label>کاڵا</label>
+        <select id="sale-product">
+          <!-- Products from list -->
+        </select>
+      </div>
+      <div class="row-2">
+        <div class="field">
+          <label>ژمارە (دانە)</label>
+          <input type="number" id="sale-qty" value="1" min="1">
+        </div>
+        <div class="field">
+          <label>نرخی یەکە (د.ع)</label>
+          <input type="number" id="sale-price" value="15000" step="500">
+        </div>
+      </div>
+      <div class="field">
+        <label>تێبینی (ئارەزوومەندانە)</label>
+        <input type="text" id="sale-note" placeholder="بۆ نموونە: ناوی کڕیار، شاری کڕیار...">
+      </div>
+      <button class="btn-block btn-primary" id="add-sale-btn">زیادکردنی فرۆشتن</button>
+    </div>
+
+    <!-- FILTER BY PRODUCT -->
+    <div class="filter-box">
+      <div class="field" style="margin-bottom:0;">
+        <label style="color:var(--gold);">فلتەرکردنی بەرهەمەکان (سەیرکردنی فرۆشی یەک بەرهەم):</label>
+        <select id="filter-product" onchange="renderReport()">
+          <option value="ALL">هەموو بەرهەمەکان</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- DATE SELECTOR & REPORT TABLE -->
+    <div class="date-switch">
+      <label>بینینی ڕاپۆرتی ڕۆژی:</label>
+      <input type="date" id="report-date">
+    </div>
+
+    <div class="report-box">
+      <table class="sales-table">
+        <thead>
+          <tr>
+            <th>کات</th>
+            <th>کاڵا و تێبینی</th>
+            <th>دانە</th>
+            <th>نرخی یەکە</th>
+            <th>کۆی گشتی</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="sales-table-body">
+          <!-- Sales rows injected here -->
+        </tbody>
+      </table>
+      <div id="empty-msg" class="empty-note hidden">هیچ فرۆشتنێک بۆ ئەم بەروارە تۆمار نەکراوە.</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // PRODUCTS LIST
+  const sampleProducts = [
+    { name: "بازنی نەسیپ کاتی دیاری کراو", price: 15000 },
+    { name: "بازنی نەسیپ - LED", price: 15000 },
+    { name: "سێتی پرژێنەری بۆن", price: 20000 },
+    { name: "سێتی پرژێنەر و ڕۆشنیی مۆبایل", price: 25000 },
+    { name: "فڵچەی ددانی بێ وایەری ڕیکار", price: 18000 },
+    { name: "جانتا کۆزمەتیکی ئافرەتان", price: 12000 },
+    { name: "بازنی مۆگانیس", price: 15000 },
+    { name: "لیدی مۆگانیس", price: 15000 }
+  ];
+
+  const SALES_KEY = 'rekarStoreSalesVi2';
+  const PASS = 'rekarStoreSales2026';
+
+  const loginScreen = document.getElementById('login-screen');
+  const dashboardScreen = document.getElementById('dashboard-screen');
+  const loginBtn = document.getElementById('login-btn');
+  const logoutBtn = document.getElementById('logout-btn');
+  const passwordInput = document.getElementById('admin-password');
+  const loginError = document.getElementById('login-error');
+
+  const productSelect = document.getElementById('sale-product');
+  const filterSelect = document.getElementById('filter-product');
+  const qtyInput = document.getElementById('sale-qty');
+  const priceInput = document.getElementById('sale-price');
+  const noteInput = document.getElementById('sale-note');
+  const addBtn = document.getElementById('add-sale-btn');
+  const reportDateInput = document.getElementById('report-date');
+  const tbody = document.getElementById('sales-table-body');
+  const emptyMsg = document.getElementById('empty-msg');
+
+  // Populate Products
+  sampleProducts.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.name;
+    opt.textContent = `${p.name} (${p.price.toLocaleString()} د.ع)`;
+    productSelect.appendChild(opt);
+
+    const optFilter = document.createElement('option');
+    optFilter.value = p.name;
+    optFilter.textContent = p.name;
+    filterSelect.appendChild(optFilter);
+  });
+
+  productSelect.addEventListener('change', () => {
+    const found = sampleProducts.find(p => p.name === productSelect.value);
+    if(found) priceInput.value = found.price;
+  });
+
+  // Auth logic
+  loginBtn.addEventListener('click', () => {
+    if(passwordInput.value === PASS) {
+      sessionStorage.setItem('rekarAdminAuth', 'true');
+      openDashboard();
+    } else {
+      loginError.style.display = 'block';
+    }
+  });
+
+  logoutBtn.addEventListener('click', () => {
+    sessionStorage.removeItem('rekarAdminAuth');
+    location.reload();
+  });
+
+  function openDashboard() {
+    loginScreen.classList.add('hidden');
+    dashboardScreen.classList.remove('hidden');
+    const today = new Date().toISOString().split('T')[0];
+    reportDateInput.value = today;
+    renderReport();
+  }
+
+  function getSales() {
+    return JSON.parse(localStorage.getItem(SALES_KEY) || '[]');
+  }
+
+  function saveSales(list) {
+    localStorage.setItem(SALES_KEY, JSON.stringify(list));
+  }
+
+  // Add Sale
+  addBtn.addEventListener('click', () => {
+    const product = productSelect.value;
+    const qty = parseInt(qtyInput.value) || 1;
+    const price = parseInt(priceInput.value) || 0;
+    const note = noteInput.value.trim();
+    const date = reportDateInput.value || new Date().toISOString().split('T')[0];
+    const time = new Date().toLocaleTimeString('en-US', {hour12: false, hour: '2-digit', minute:'2-digit'});
+
+    const newRecord = {
+      id: Date.now(),
+      date,
+      time,
+      product,
+      qty,
+      price,
+      total: qty * price,
+      note
+    };
+
+    const list = getSales();
+    list.push(newRecord);
+    saveSales(list);
+
+    noteInput.value = '';
+    renderReport();
+  });
+
+  // Delete Sale
+  function deleteSale(id) {
+    let list = getSales();
+    list = list.filter(item => item.id !== id);
+    saveSales(list);
+    renderReport();
+  }
+
+  // Render Daily & Filtered Report
+  function renderReport() {
+    const selectedDate = reportDateInput.value;
+    const selectedFilterProduct = filterSelect.value;
+    const list = getSales();
+
+    // Filter by Date AND Product Selection
+    const filtered = list.filter(item => {
+      const matchDate = item.date === selectedDate;
+      const matchProduct = (selectedFilterProduct === 'ALL') || (item.product === selectedFilterProduct);
+      return matchDate && matchProduct;
+    });
+
+    tbody.innerHTML = '';
+    let totalQty = 0;
+    let totalRevenue = 0;
+
+    if(filtered.length === 0) {
+      emptyMsg.classList.remove('hidden');
+    } else {
+      emptyMsg.classList.add('hidden');
+      filtered.reverse().forEach(item => {
+        totalQty += item.qty;
+        totalRevenue += item.total;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.time}</td>
+          <td>
+            <strong>${item.product}</strong>
+            ${item.note ? `<span class="note-text">تێبینی: ${item.note}</span>` : ''}
+          </td>
+          <td>${item.qty}</td>
+          <td>${item.price.toLocaleString()}</td>
+          <td><strong>${item.total.toLocaleString()} د.ع</strong></td>
+          <td><button class="del-row" onclick="deleteSale(${item.id})">✕</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    document.getElementById('stat-total-qty').innerText = totalQty;
+    document.getElementById('stat-total-revenue').innerText = totalRevenue.toLocaleString() + ' د.ع.';
+  }
+
+  reportDateInput.addEventListener('change', renderReport);
+
+  if(sessionStorage.getItem('rekarAdminAuth') === 'true') {
+    openDashboard();
+  }
+</script>
+
+</body>
+</html>
